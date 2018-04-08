@@ -1,0 +1,13 @@
+[Unit]
+Description=Padmiss daemon
+After=network.target
+
+[Service]
+User=stepmania
+WorkingDirectory=/opt/padmiss-daemon
+ExecStart=/usr/bin/python tournament-daemon.py
+Restart=always
+RestartSec=1000ms
+
+[Install]
+WantedBy=multi-user.target

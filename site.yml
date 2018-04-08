@@ -8,3 +8,7 @@
     - gcc
     - stepmania
     - graphics
+  tasks:
+    - include_role:
+        name: padmiss
+      when: padmiss_api_key is defined

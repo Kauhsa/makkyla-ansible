@@ -12,7 +12,7 @@
   git:
     repo: https://github.com/Kauhsa/stepmania
     dest: /stepmania
-    version: sync-start
+    version: mckyla
   register: source
 
 # -DWITH_MINIMAID=OFF required so we don't get a complain about -fPIC,
@@ -98,6 +98,16 @@
     - key: DelayedBack
       value: '0'
     - key: PercentageScoring
+      value: '1'
+
+    # padmiss stuff
+    - key: MemoryCardOsMountPointP1
+      value: '/tmp/padmiss-daemon-p1'
+    - key: MemoryCardOsMountPointP2
+      value: '/tmp/padmiss-daemon-p2'
+    - key: MemoryCardDriver
+      value: 'Directory'
+    - key: MemoryCards
       value: '1'
 
 - name: Replace all instances of theme

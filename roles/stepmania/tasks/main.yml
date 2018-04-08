@@ -97,6 +97,8 @@
       value: '100'
     - key: DelayedBack
       value: '0'
+    - key: PercentageScoring
+      value: '1'
 
 - name: Replace all instances of theme
   replace:

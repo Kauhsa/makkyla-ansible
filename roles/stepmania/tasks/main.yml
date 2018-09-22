@@ -101,6 +101,8 @@
       value: '1'
     - key: AutogenGroupCourses
       value: '0'
+    - key: CourseSortOrder
+      value: 'Title' # note: only works in our custom build
 
     # padmiss stuff
     - key: MemoryCardOsMountPointP1

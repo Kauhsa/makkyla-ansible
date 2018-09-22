@@ -99,6 +99,8 @@
       value: '0'
     - key: PercentageScoring
       value: '1'
+    - key: AutogenGroupCourses
+      value: '0'
 
     # padmiss stuff
     - key: MemoryCardOsMountPointP1

@@ -124,7 +124,7 @@
     regexp: '^{{ item.key }}'
   with_items:
     - key: VisualTheme
-      value: Arrows
+      value: Custards
     - key: HideStockNoteSkins
       value: 'true'
     - key: TimingWindowAdd

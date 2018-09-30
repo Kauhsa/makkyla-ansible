@@ -109,6 +109,8 @@
       value: '0'
     - key: CourseSortOrder
       value: 'Title' # note: only works in our custom build
+    - key: DefaultModifiers
+      value: 'FailImmediateContinue, Overhead, Cel, C600'
 
     # padmiss stuff
     - key: MemoryCardOsMountPointP1

@@ -111,6 +111,8 @@
       value: 'Title' # note: only works in our custom build
     - key: DefaultModifiers
       value: 'FailImmediateContinue, Overhead, Cel, C600'
+    - key: Vsync
+      value: '0'
 
     # padmiss stuff
     - key: MemoryCardOsMountPointP1

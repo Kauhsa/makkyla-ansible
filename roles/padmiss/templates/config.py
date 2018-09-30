@@ -1,7 +1,7 @@
 from hid import RFIDReader
 from util import FIFOReader
 
-url = 'http://api.padmiss.com:3020'
+url = 'https://api.padmiss.com/'
 apikey = '{{ padmiss_api_key }}'
 scores_dir = '/home/stepmania/.stepmania-5.0/Save/Padmiss'
 backup_dir = '/opt/padmiss-daemon-backups'

@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# wait until pulseaudio has started, pasuspender doesn't work otherwise
-while [ -z "$(pidof pulseaudio)" ]; do
-  sleep 0.5
-done
+# make sure pulseaudio is running
+pulseaudio --daemonize --start
 
 trap 'pkill unclutter; xset +dpms; xset s on' EXIT
 

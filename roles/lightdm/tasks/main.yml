@@ -22,3 +22,14 @@
     path: /etc/pam.d/lightdm
     line: "auth  sufficient  pam_succeed_if.so user ingroup nopasswdlogin"
     insertafter: "#%PAM-1.0"
+
+- name: Create stepmania-xfce.desktop session
+  copy:
+    src: files/stepmania-xfce.desktop
+    dest: /usr/share/xsessions/stepmania-xfce.desktop
+
+- name: Copy stepmania-xfce.sh
+  copy:
+    src: files/stepmania-xfce.sh
+    dest: /usr/bin/stepmania-xfce
+    mode: 0755

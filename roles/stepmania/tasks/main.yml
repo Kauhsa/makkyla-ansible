@@ -220,9 +220,3 @@
     state: directory
     owner: stepmania
     group: stepmania
-
-#- name: Run Stepmania on startup
-#  file:
-#    src: /home/stepmania/Desktop/stepmania.desktop
-#    dest: /home/stepmania/.config/autostart/stepmania.desktop
-#    state: link

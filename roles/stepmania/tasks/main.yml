@@ -14,6 +14,7 @@
     dest: /stepmania
     version: mckyla-hackaton-edition
   register: source
+  diff: no
 
 # -DWITH_MINIMAID=OFF required so we don't get a complain about -fPIC,
 # see https://github.com/stepmania/stepmania/issues/1352
@@ -45,6 +46,7 @@
     dest: /home/stepmania/content/Themes/Simply-Love-SM5
     version: makkyla
   become_user: stepmania
+  diff: no
 
 - name: Make sure Save directory exists
   file:

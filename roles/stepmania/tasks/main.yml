@@ -145,7 +145,7 @@
   lineinfile:
     path: /home/stepmania/.stepmania-5.0/Save/ThemePrefs.ini
     line: "{{ item.key }}={{ item.value }}\r"
-    insertafter: '\[Simply-Love-SM5\]'
+    insertafter: '\[Simply Love\]'
     regexp: '^{{ item.key }}'
   with_items:
     - key: VisualTheme

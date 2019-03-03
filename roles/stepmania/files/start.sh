@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# run fsr-server
+/home/stepmania/Desktop/mckyla-fsr/web-ui/fsrServer.sh &
+
 # make sure pulseaudio is running
 pulseaudio --daemonize --start
 

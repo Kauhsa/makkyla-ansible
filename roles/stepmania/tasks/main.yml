@@ -19,7 +19,7 @@
 # -DWITH_MINIMAID=OFF required so we don't get a complain about -fPIC,
 # see https://github.com/stepmania/stepmania/issues/1352
 - name: Run CMake
-  shell: CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release .. -DWITH_MINIMAID=OFF && CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake .. -DWITH_MINIMAID=OFF
+  shell: CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release .. -DWITH_MINIMAID=OFF -DCMAKE_CXX_FLAGS=-std=c++11 && CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake .. -DWITH_MINIMAID=OFF -DCMAKE_CXX_FLAGS=-std=c++11
   args:
     chdir: /stepmania/Build
   when: source.changed

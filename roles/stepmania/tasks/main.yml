@@ -12,11 +12,13 @@
   git:
     repo: https://github.com/Kauhsa/stepmania
     dest: /stepmania
-    version: mckyla-51
+    version: mckyla-hackaton-edition
   register: source
 
+# -DWITH_MINIMAID=OFF required so we don't get a complain about -fPIC,
+# see https://github.com/stepmania/stepmania/issues/1352
 - name: Run CMake
-  shell: cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release .. && cmake ..
+  shell: CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release .. -DWITH_MINIMAID=OFF && CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake .. -DWITH_MINIMAID=OFF
   args:
     chdir: /stepmania/Build
   when: source.changed
@@ -46,7 +48,7 @@
 
 - name: Make sure Save directory exists
   file:
-    path: /home/stepmania/.stepmania-5.1/Save
+    path: /home/stepmania/.stepmania-5.0/Save
     state: directory
     owner: stepmania
     group: stepmania
@@ -55,18 +57,18 @@
 - name: Install Keymaps.ini file
   copy:
     src: files/Keymaps.ini
-    dest: /home/stepmania/.stepmania-5.1/Save/Keymaps.ini
+    dest: /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
     owner: stepmania
     group: stepmania
 
 - name: Check if Preferences.ini exists
   stat:
-    path: /home/stepmania/.stepmania-5.1/Save/Preferences.ini
+    path: /home/stepmania/.stepmania-5.0/Save/Preferences.ini
   register: preferences
 
 - name: Set basic preferences
   lineinfile:
-    path: /home/stepmania/.stepmania-5.1/Save/Preferences.ini
+    path: /home/stepmania/.stepmania-5.0/Save/Preferences.ini
     line: "{{ item.key }}={{ item.value }}\r"
     insertafter: '\[Options\]'
     regexp: '^{{ item.key }}'
@@ -127,19 +129,19 @@
 
 - name: Replace all instances of theme
   replace:
-    path: /home/stepmania/.stepmania-5.1/Save/Preferences.ini
+    path: /home/stepmania/.stepmania-5.0/Save/Preferences.ini
     replace: 'Theme=Simply-Love-SM5'
     regexp: '^Theme=(.*)'
   when: preferences.stat.exists
 
 - name: Check if ThemePrefs.ini exists
   stat:
-    path: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
+    path: /home/stepmania/.stepmania-5.0/Save/ThemePrefs.ini
   register: themeprefs
 
 - name: Set some theme preferences
   lineinfile:
-    path: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
+    path: /home/stepmania/.stepmania-5.0/Save/ThemePrefs.ini
     line: "{{ item.key }}={{ item.value }}\r"
     insertafter: '\[Simply-Love-SM5\]'
     regexp: '^{{ item.key }}'
@@ -211,7 +213,7 @@
 
 - name: Add link to Save to Desktop
   file:
-    src: /home/stepmania/.stepmania-5.1/Save
+    src: /home/stepmania/.stepmania-5.0/Save
     dest: /home/stepmania/Desktop/Save
     state: link
     force: yes

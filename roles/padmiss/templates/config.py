@@ -3,7 +3,7 @@ from util import FIFOReader
 
 url = 'https://api.padmiss.com/'
 apikey = '{{ padmiss_api_key }}'
-scores_dir = '/home/stepmania/.stepmania-5.1/Save/Padmiss'
+scores_dir = '/home/stepmania/.stepmania-5.0/Save/Padmiss'
 backup_dir = '/opt/padmiss-daemon-backups'
 profile_dir = 'StepMania 5'
 

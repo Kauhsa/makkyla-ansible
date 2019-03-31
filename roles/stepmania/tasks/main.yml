@@ -118,6 +118,8 @@
       value: 'FailImmediateContinue, Overhead, Cel, C600'
     - key: Vsync
       value: '0'
+    - key: InputDrivers
+      value: 'LinuxEvent,X11'
 
     # padmiss stuff
     - key: MemoryCardOsMountPointP1
@@ -179,9 +181,15 @@
   apt:
     package: unclutter
 
-- name: Copy startup script
+- name: Copy keymap template
   copy:
-    src: files/start.sh
+    src: files/Keymaps.template.ini
+    dest: /home/stepmania/Keymaps.template.ini
+    mode: 0755
+
+- name: Copy startup script
+  template:
+    src: templates/start.sh
     dest: /home/stepmania/start-stepmania.sh
     mode: 0755
 

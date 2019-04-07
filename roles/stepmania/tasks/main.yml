@@ -183,7 +183,7 @@
 
 - name: Copy keymap template
   copy:
-    src: files/Keymaps.template.ini
+    src: "files/{{ keymap_template_file }}"
     dest: /home/stepmania/Keymaps.template.ini
     mode: 0755
 

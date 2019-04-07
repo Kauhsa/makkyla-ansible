@@ -42,13 +42,13 @@ IFS="
 for device in $(ls -f /sys/class/input | grep input); do
   device_name=$(cat "/sys/class/input/$device/name")
   real_device_path=$(realpath /sys/class/input/$device)
-  device_usb_path=$(realpath $real_device_path/../../.. | sed -E 's|^.*/(.*).{2}$|\1|g')
+  device_usb_port=$(realpath $real_device_path/../../../.. | sed -E 's|^.*/(.*)$|\1|g')
 
-  if [[ $device_usb_path == $left_pad_usb_port ]] && (ls /sys/class/input/$device/js* >/dev/null 2>&1); then
+  if [[ $device_usb_port == $left_pad_usb_port ]] && (ls /sys/class/input/$device/js* >/dev/null 2>&1); then
     echo "Left device found in index ${current_index}"
     left_pad_index=${current_index}
     current_index=$((current_index + 1))
-  elif [[ $device_usb_path == $right_pad_usb_port ]] && (ls /sys/class/input/$device/js* >/dev/null 2>&1); then
+  elif [[ $device_usb_port == $right_pad_usb_port ]] && (ls /sys/class/input/$device/js* >/dev/null 2>&1); then
     echo "Right device found in index ${current_index}"
     right_pad_index=${current_index}
     current_index=$((current_index + 1))

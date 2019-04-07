@@ -87,7 +87,7 @@
     - key: SoundPreferredSampleRate
       value: '48000'
     - key: LightsDriver
-      value: PIUIO_Leds
+      value: ''
     - key: Theme
       value: 'Simply-Love-SM5'
     - key: DisplayWidth

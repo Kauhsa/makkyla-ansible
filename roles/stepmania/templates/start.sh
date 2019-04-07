@@ -28,28 +28,47 @@ export __GL_SYNC_TO_VBLANK=0
 rm -rf /tmp/padmiss-daemon-p1
 rm -rf /tmp/padmiss-daemon-p2
 
-{% if piuio_bind_fix %}
-# HAX: make sure PIUIO is bound on correct keymap index
-piuio_index=0
+# you can dig around with lsusb -t to find which is which.
+left_pad_usb_port="{{ left_pad_usb_port }}"
+right_pad_usb_port="{{ right_pad_usb_port }}"
+
+current_index="0"
+left_pad_index="NOT_FOUND"
+right_pad_index="NOT_FOUND"
 IFS="
 "
+
 # ls -f is important - stepmania iterates devices on same order
 for device in $(ls -f /sys/class/input | grep input); do
   device_name=$(cat "/sys/class/input/$device/name")
+  real_device_path=$(realpath /sys/class/input/$device)
+  device_usb_path=$(realpath $real_device_path/../../.. | sed -E 's|^.*/(.*).{2}$|\1|g')
 
-  # is it the lovely piuio? could it be?
-  if [[ $device_name == *"PIUIO"* ]]; then
-    echo "PIUIO found in index ${piuio_index}"
-    sed "s/JoyXX/Joy1${piuio_index}/g" /home/stepmania/Keymaps.template.ini > /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
-    break
-  fi
-
-  # fine, it is another joystick? means that PIUIO is bumped one index further
-  if ls /sys/class/input/$device/js*; then
-    piuio_index=$((piuio_index + 1))
+  if [[ $device_usb_path == $left_pad_usb_port ]] && (ls /sys/class/input/$device/js* >/dev/null 2>&1); then
+    echo "Left device found in index ${current_index}"
+    left_pad_index=${current_index}
+    current_index=$((current_index + 1))
+  elif [[ $device_usb_path == $right_pad_usb_port ]] && (ls /sys/class/input/$device/js* >/dev/null 2>&1); then
+    echo "Right device found in index ${current_index}"
+    right_pad_index=${current_index}
+    current_index=$((current_index + 1))
+  elif (ls /sys/class/input/$device/js* >/dev/null 2>&1); then
+    # fine, it is other joystick that we don't know of? means that our joysticks are bumped down
+    echo "Unknown joystick, incrementing index"
+    current_index=$((current_index + 1))
   fi
 done
-{% endif %}
+
+if [[ $left_pad_index == "NOT_FOUND" ]] || [[ $right_pad_index == "NOT_FOUND" ]]; then
+  echo ""
+  echo "WARNING:"
+  echo "One or more configured USB ports were missing. Key bindings were not set, so pads might not work correctly."
+  read -p "Press enter to start Stepmania anyway"
+else
+  cp /home/stepmania/Keymaps.template.ini /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
+  sed -i "s/JoyLeft/Joy1${left_pad_index}/g" /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
+  sed -i "s/JoyRight/Joy1${right_pad_index}/g" /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
+fi
 
 pasuspender /stepmania/stepmania
 

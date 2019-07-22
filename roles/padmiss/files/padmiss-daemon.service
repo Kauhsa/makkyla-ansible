@@ -5,7 +5,8 @@ After=network.target
 [Service]
 User=stepmania
 WorkingDirectory=/opt/padmiss-daemon
-ExecStart=/usr/bin/python tournament-daemon.py
+ExecStartPre=/bin/sleep 2
+ExecStart=/home/stepmania/.padmiss-daemon-venv/bin/python cli.py
 Restart=always
 RestartSec=1000ms
 

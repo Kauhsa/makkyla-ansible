@@ -12,7 +12,7 @@
   git:
     repo: https://github.com/Kauhsa/stepmania
     dest: /stepmania
-    version: mckyla-hackaton-edition
+    version: mckyla-with-latest-padmiss-stuff
   register: source
   diff: no
 
@@ -55,14 +55,6 @@
     owner: stepmania
     group: stepmania
     recurse: yes
-
-# Note: don't do this for now, since they keymaps differ per machine quite a lot.
-#- name: Install Keymaps.ini file
-#  copy:
-#    src: files/Keymaps.ini
-#    dest: /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
-#    owner: stepmania
-#    group: stepmania
 
 - name: Check if Preferences.ini exists
   stat:
@@ -129,6 +121,8 @@
     - key: MemoryCardDriver
       value: 'Directory'
     - key: MemoryCards
+      value: '1'
+    - key: MemoryCardPadmissEnabled
       value: '1'
   when: preferences.stat.exists
 

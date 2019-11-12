@@ -1,0 +1,14 @@
+[Unit]
+Description=Analog dance pad
+After=network.target
+
+[Service]
+User=stepmania
+WorkingDirectory=/opt/analog-dance-pad/server
+ExecStartPre=/bin/sleep 2
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=1000ms
+
+[Install]
+WantedBy=multi-user.target

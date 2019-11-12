@@ -1,0 +1,75 @@
+- name: Give permissions to everyone for analog dance pads
+  copy:
+    content: |
+      SUBSYSTEM=="input", GROUP="input", MODE="0666"
+      SUBSYSTEM=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204f", MODE:="666", GROUP="plugdev"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="204f", MODE="0666", GROUP="plugdev"
+    dest: /etc/udev/rules.d/98-permissions-to-analog-dance-pads.rules
+  register: udev
+
+- name: Reload udev permissions
+  shell: udevadm control --reload
+  when: udev.changed
+
+- name: Add NodeSource signing key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+
+- name: Enable NodeSource repository
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_12.x stretch main
+
+- name: Enable NodeSource src repository
+  apt_repository:
+    repo: deb-src https://deb.nodesource.com/node_12.x stretch main
+
+- name: Enable apt-pinning because our apt pinnings are fucked
+  copy:
+    src: files/use-nodesource
+    dest: /etc/apt/preferences.d/use-nodesource
+
+- name: Install node
+  apt:
+    package: nodejs
+    update_cache: yes
+
+- name: Create directory for analog-dance-pad
+  file:
+    path: /opt/analog-dance-pad
+    state: directory
+    owner: stepmania
+    group: stepmania
+
+- name: Clone source for analog-dance-pad
+  git:
+    repo: https://github.com/kauhsa/analog-dance-pad
+    dest: /opt/analog-dance-pad
+  register: source
+  become_user: stepmania
+
+- name: Install dependencies
+  shell: npm install
+  args:
+    chdir: /opt/analog-dance-pad/server
+  when: source.changed
+  become_user: stepmania
+
+- name: Build server
+  shell: npm run build
+  args:
+    chdir: /opt/analog-dance-pad/server
+  when: source.changed
+  become_user: stepmania
+
+- name: Create analog-dance-pad service
+  copy:
+    src: files/analog-dance-pad.service
+    dest: /etc/systemd/system/analog-dance-pad.service
+  notify: restart analog-dance-pad.service
+
+- name: Enable analog-dance-pad service
+  systemd:
+    name: analog-dance-pad
+    state: started
+    daemon_reload: yes
+    enabled: yes

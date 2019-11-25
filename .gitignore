@@ -1,2 +1,3 @@
 *.retry
 vault-key
+.deploy-analog-dance-pad-client.rc

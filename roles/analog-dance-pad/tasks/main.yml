@@ -7,6 +7,16 @@
     dest: /etc/udev/rules.d/98-permissions-to-analog-dance-pads.rules
   register: udev
 
+- name: Give permissions for Teensy (necessary? maybe not?)
+  copy:
+    content: |
+      ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_PORT_IGNORE}="1"
+      ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789A]?", ENV{MTP_NO_PROBE}="1"
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789ABCD]?", MODE:="0666"
+      KERNEL=="ttyACM*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", MODE:="0666"
+    dest: /etc/udev/rules.d/97-permissions-to-teensy.rules
+  register: udev
+
 - name: Reload udev permissions
   shell: udevadm control --reload
   when: udev.changed
@@ -28,9 +38,9 @@
     src: files/use-nodesource
     dest: /etc/apt/preferences.d/use-nodesource
 
-- name: Install node
+- name: Install node and libusb-dev
   apt:
-    package: nodejs
+    package: nodejs=12*,libusb-dev
     update_cache: yes
 
 - name: Create directory for analog-dance-pad
@@ -44,8 +54,10 @@
   git:
     repo: https://github.com/kauhsa/analog-dance-pad
     dest: /opt/analog-dance-pad
+    force: yes
   register: source
   become_user: stepmania
+  diff: no
 
 - name: Install dependencies
   shell: npm install
@@ -73,3 +85,25 @@
     state: started
     daemon_reload: yes
     enabled: yes
+
+- name: Create directory for analog-dance-pad
+  file:
+    path: /opt/teensy-loader-cli
+    state: directory
+    owner: stepmania
+    group: stepmania
+
+- name: Get teensy loader CLI source
+  git:
+    repo: https://github.com/PaulStoffregen/teensy_loader_cli
+    dest: /opt/teensy-loader-cli
+  register: teensy_loader_source
+  become_user: stepmania
+  diff: no
+
+- name: Build server
+  shell: make
+  args:
+    chdir: /opt/teensy-loader-cli
+  when: teensy_loader_source.changed
+  become_user: stepmania

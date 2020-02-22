@@ -11,30 +11,28 @@
 - name: Fetch Stepmania source
   git:
     repo: https://github.com/Kauhsa/stepmania
-    dest: /stepmania
+    dest: /opt/stepmania
     version: mckyla-with-latest-padmiss-stuff
   register: source
   diff: no
 
-# -DWITH_MINIMAID=OFF required so we don't get a complain about -fPIC,
-# see https://github.com/stepmania/stepmania/issues/1352
 - name: Run CMake
-  shell: CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release .. -DWITH_MINIMAID=OFF -DCMAKE_CXX_FLAGS=-std=c++11 && CC=/usr/bin/gcc-5 CXX=/usr/bin/g++-5 cmake .. -DWITH_MINIMAID=OFF -DCMAKE_CXX_FLAGS=-std=c++11
+  shell: cmake -G 'Unix Makefiles' -DCMAKE_BUILD_TYPE=Release .. && cmake ..
   args:
-    chdir: /stepmania/Build
+    chdir: /opt/stepmania/Build
   when: source.changed
 
 - name: Compile Stepmania
   shell: make -j$(nproc --all)
   args:
-    chdir: /stepmania/Build
+    chdir: /opt/stepmania/Build
   when: source.changed
 
 ## THEME AND CONFIGURATION
 
 - name: Make sure theme directory exists
   file:
-    path: /home/stepmania/content/Themes
+    path: /home/stepmania-content
     state: directory
     owner: stepmania
     group: stepmania
@@ -43,14 +41,14 @@
 - name: Get Simply Love, McKylä edition
   git:
     repo: https://github.com/Kauhsa/Simply-Love-SM5
-    dest: /home/stepmania/content/Themes/Simply-Love-SM5
+    dest: /home/stepmania-content/Themes/Simply-Love-SM5
     version: makkyla
   become_user: stepmania
   diff: no
 
 - name: Make sure Save directory exists
   file:
-    path: /home/stepmania/.stepmania-5.0/Save
+    path: /home/stepmania/.stepmania-5.1/Save
     state: directory
     owner: stepmania
     group: stepmania
@@ -58,18 +56,18 @@
 
 - name: Check if Preferences.ini exists
   stat:
-    path: /home/stepmania/.stepmania-5.0/Save/Preferences.ini
+    path: /home/stepmania/.stepmania-5.1/Save/Preferences.ini
   register: preferences
 
 - name: Set basic preferences
   lineinfile:
-    path: /home/stepmania/.stepmania-5.0/Save/Preferences.ini
+    path: /home/stepmania/.stepmania-5.1/Save/Preferences.ini
     line: "{{ item.key }}={{ item.value }}\r"
     insertafter: '\[Options\]'
     regexp: '^{{ item.key }}'
   with_items:
     - key: AdditionalFolders
-      value: /home/stepmania/content
+      value: /home/stepmania-content
     - key: Windowed
       value: '0'
     - key: SoundDrivers
@@ -128,19 +126,19 @@
 
 - name: Replace all instances of theme
   replace:
-    path: /home/stepmania/.stepmania-5.0/Save/Preferences.ini
+    path: /home/stepmania/.stepmania-5.1/Save/Preferences.ini
     replace: 'Theme=Simply-Love-SM5'
     regexp: '^Theme=(.*)'
   when: preferences.stat.exists
 
 - name: Check if ThemePrefs.ini exists
   stat:
-    path: /home/stepmania/.stepmania-5.0/Save/ThemePrefs.ini
+    path: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
   register: themeprefs
 
 - name: Set some theme preferences
   lineinfile:
-    path: /home/stepmania/.stepmania-5.0/Save/ThemePrefs.ini
+    path: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
     line: "{{ item.key }}={{ item.value }}\r"
     insertafter: '\[Simply Love\]'
     regexp: '^{{ item.key }}'
@@ -149,15 +147,13 @@
       value: Custards
     - key: HideStockNoteSkins
       value: 'true'
-    - key: TimingWindowAdd
-      value: '0.0015'
     - key: AllowScreenSelectProfile
       value: 'true'
   when: themeprefs.stat.exists
 
 - name: Make sure noteskins directory exists
   file:
-    path: /home/stepmania/content/NoteSkins/dance
+    path: /home/stepmania-content/NoteSkins/dance
     state: directory
     owner: stepmania
     group: stepmania
@@ -166,7 +162,7 @@
 - name: Install noteskins
   synchronize:
     src: files/noteskins/
-    dest: /home/stepmania/content/NoteSkins/dance
+    dest: /home/stepmania-content/NoteSkins/dance
     use_ssh_args: yes
 
 ## STARTUP AND DESKTOP ICONS
@@ -204,21 +200,21 @@
 
 - name: Add link to Songs to Desktop
   file:
-    src: /home/stepmania/content/Songs
+    src: /home/stepmania-content/Songs
     dest: /home/stepmania/Desktop/Songs
     state: link
     force: yes
 
 - name: Add link to Courses to Desktop
   file:
-    src: /home/stepmania/content/Courses
+    src: /home/stepmania-content/Courses
     dest: /home/stepmania/Desktop/Courses
     state: link
     force: yes
 
 - name: Add link to Save to Desktop
   file:
-    src: /home/stepmania/.stepmania-5.0/Save
+    src: /home/stepmania/.stepmania-5.1/Save
     dest: /home/stepmania/Desktop/Save
     state: link
     force: yes

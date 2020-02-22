@@ -12,7 +12,7 @@ xset s off
 # hide mouse cursor if not moved
 unclutter -idle 1 -root &
 
-# try to clone displays for streming – but if it's not possible for some reason, that's fine as well
+# try to clone displays for streaming – but if it's not possible for some reason, that's fine as well
 (
   xrandr --output HDMI-0 --off --output DVI-D-0 --panning 0x0 &&
   xrandr --output HDMI-0 --same-as DVI-D-0 --mode 1280x720 --scale-from 1920x1080 
@@ -62,12 +62,12 @@ if [[ $left_pad_index == "NOT_FOUND" ]] || [[ $right_pad_index == "NOT_FOUND" ]]
   echo "One or more configured USB ports were missing. Key bindings were not set, so pads might not work correctly."
   read -p "Press enter to start Stepmania anyway"
 else
-  cp /home/stepmania/Keymaps.template.ini /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
-  sed -i "s/JoyLeft/Joy1${left_pad_index}/g" /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
-  sed -i "s/JoyRight/Joy1${right_pad_index}/g" /home/stepmania/.stepmania-5.0/Save/Keymaps.ini
+  cp /home/stepmania/Keymaps.template.ini /home/stepmania/.stepmania-5.1/Save/Keymaps.ini
+  sed -i "s/JoyLeft/Joy1${left_pad_index}/g" /home/stepmania/.stepmania-5.1/Save/Keymaps.ini
+  sed -i "s/JoyRight/Joy1${right_pad_index}/g" /home/stepmania/.stepmania-5.1/Save/Keymaps.ini
 fi
 
-pasuspender /stepmania/stepmania
+pasuspender /opt/stepmania/stepmania
 
 if [[ $? -ne 0 ]]; then
   # wait until enter is pressed

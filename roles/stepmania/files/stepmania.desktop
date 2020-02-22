@@ -5,4 +5,4 @@ Name=Stepmania
 Path=/stepmania
 Exec=/home/stepmania/start-stepmania.sh
 Terminal=true
-Icon=/stepmania/icons/hicolor/256x256/apps/stepmania-ssc.png
+Icon=/opt/stepmania/icons/hicolor/256x256/apps/stepmania-ssc.png

@@ -42,7 +42,7 @@
 
 - name: Create Padmiss folder inside Stepmania save
   file:
-    path: /home/stepmania/.stepmania-5.0/Save/Padmiss
+    path: /home/stepmania/.stepmania-5.1/Save/Padmiss
     state: directory
     owner: stepmania
     group: stepmania

@@ -1,6 +1,6 @@
 - name: Install utility packages
   apt:
-    package: sudo,chromium,vim,htop,net-tools,gedit
+    package: sudo,chromium,vim,htop,net-tools,gedit,rsync,git
 
 - name: Make sure user stepmania is in sudo group
   user:

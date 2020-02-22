@@ -8,15 +8,15 @@
   shell: udevadm control --reload
   when: udev.changed
 
-- name: Install python3, python3.7-venv and python3-venv (dunno why we need the last one, but we do)
+- name: Install python
   apt:
-    name: python3.7,python3.7-venv,python3-venv
+    name: python3.7,python3.7-venv,python3-setuptools,python-setuptools
 
 - name: Fetch padmiss-daemon source
   git:
     repo: https://github.com/electromuis/padmiss-daemon
     dest: /opt/padmiss-daemon
-    version: 326c3817b4296ed3d02e5b5ba602637efb07990b
+    version: fabcee5c5919eb2fadb2157e4e6e62f28c4dc28d
   notify: restart padmiss-daemon
   diff: no
 

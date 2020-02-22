@@ -1,9 +1,5 @@
 ## MAIN BUILD
 
-- name: Install Git
-  apt:
-    package: git
-
 - name: Install Stepmania build dependencies
   apt:
     package: cmake,build-essential,mesa-common-dev,libglu1-mesa-dev,libglew1.5-dev,libxtst-dev,libxrandr-dev,libpng-dev,libjpeg-dev,zlib1g-dev,libbz2-dev,libogg-dev,libvorbis-dev,libc6-dev,yasm,libasound-dev,libpulse-dev,binutils-dev,libgtk2.0-dev,libmad0-dev,libudev-dev,libva-dev
@@ -12,7 +8,7 @@
   git:
     repo: https://github.com/Kauhsa/stepmania
     dest: /opt/stepmania
-    version: mckyla-with-latest-padmiss-stuff
+    version: mckyla
   register: source
   diff: no
 
@@ -30,7 +26,7 @@
 
 ## THEME AND CONFIGURATION
 
-- name: Make sure theme directory exists
+- name: Make sure content directory exists
   file:
     path: /home/stepmania-content
     state: directory
@@ -140,8 +136,9 @@
   lineinfile:
     path: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
     line: "{{ item.key }}={{ item.value }}\r"
-    insertafter: '\[Simply Love\]'
+    insertafter: '\[Simply-Love-SM5\]'
     regexp: '^{{ item.key }}'
+    firstmatch: yes
   with_items:
     - key: VisualTheme
       value: Custards
@@ -163,13 +160,20 @@
   synchronize:
     src: files/noteskins/
     dest: /home/stepmania-content/NoteSkins/dance
-    use_ssh_args: yes
 
 ## STARTUP AND DESKTOP ICONS
 
 - name: Install unclutter for hiding cursor
   apt:
     package: unclutter
+
+- name: Make sure pulseaudio is started and enabled for user
+  become_user: stepmania
+  systemd:
+    enabled: yes
+    scope: user
+    state: started
+    name: pulseaudio
 
 - name: Copy keymap template
   copy:
@@ -198,12 +202,27 @@
     owner: stepmania
     group: stepmania
 
+- name: Make sure Songs folder exists
+  file:
+    path: /home/stepmania-content/Songs
+    owner: stepmania
+    group: stepmania
+    state: directory
+
 - name: Add link to Songs to Desktop
   file:
     src: /home/stepmania-content/Songs
     dest: /home/stepmania/Desktop/Songs
     state: link
     force: yes
+
+
+- name: Make sure Courses folder exists
+  file:
+    path: /home/stepmania-content/Courses
+    owner: stepmania
+    group: stepmania
+    state: directory
 
 - name: Add link to Courses to Desktop
   file:
@@ -218,10 +237,3 @@
     dest: /home/stepmania/Desktop/Save
     state: link
     force: yes
-
-- name: Make sure autostart directory exists
-  file:
-    path: /home/stepmania/.config/autostart
-    state: directory
-    owner: stepmania
-    group: stepmania

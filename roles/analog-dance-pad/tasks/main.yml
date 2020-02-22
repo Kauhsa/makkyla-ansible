@@ -27,20 +27,15 @@
 
 - name: Enable NodeSource repository
   apt_repository:
-    repo: deb https://deb.nodesource.com/node_12.x stretch main
+    repo: deb https://deb.nodesource.com/node_12.x buster main
 
 - name: Enable NodeSource src repository
   apt_repository:
-    repo: deb-src https://deb.nodesource.com/node_12.x stretch main
-
-- name: Enable apt-pinning because our apt pinnings are fucked
-  copy:
-    src: files/use-nodesource
-    dest: /etc/apt/preferences.d/use-nodesource
+    repo: deb-src https://deb.nodesource.com/node_12.x buster main
 
 - name: Install node and libusb-dev
   apt:
-    package: nodejs=12*,libusb-dev
+    package: nodejs,libusb-dev
     update_cache: yes
 
 - name: Create directory for analog-dance-pad

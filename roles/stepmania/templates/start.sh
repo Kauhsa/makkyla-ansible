@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# make sure pulseaudio is running
-pulseaudio --daemonize --start
-
 trap 'pkill unclutter; xset +dpms; xset s on' EXIT
 
 # disable sleeps
@@ -17,9 +14,6 @@ unclutter -idle 1 -root &
   xrandr --output HDMI-0 --off --output DVI-D-0 --panning 0x0 &&
   xrandr --output HDMI-0 --same-as DVI-D-0 --mode 1280x720 --scale-from 1920x1080 
 ) || true
-
-# force vsync off
-export __GL_SYNC_TO_VBLANK=0
 
 # clear padmiss profile directories
 rm -rf /tmp/padmiss-daemon-p1

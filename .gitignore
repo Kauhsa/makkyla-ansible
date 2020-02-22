@@ -1,3 +1,7 @@
 *.retry
-vault-key
-.deploy-analog-dance-pad-client.rc
+/vault-key
+/.deploy-analog-dance-pad-client.rc
+.DS_Store
+
+/save-backups
+!/save-backups/.gitkeep

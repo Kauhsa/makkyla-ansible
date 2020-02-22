@@ -28,7 +28,7 @@
 
 - name: Make sure content directory exists
   file:
-    path: /home/stepmania-content
+    path: /home/stepmania/stepmania-content
     state: directory
     owner: stepmania
     group: stepmania
@@ -37,7 +37,7 @@
 - name: Get Simply Love, McKylä edition
   git:
     repo: https://github.com/Kauhsa/Simply-Love-SM5
-    dest: /home/stepmania-content/Themes/Simply-Love-SM5
+    dest: /home/stepmania/stepmania-content/Themes/Simply-Love-SM5
     version: makkyla
   become_user: stepmania
   diff: no
@@ -63,7 +63,7 @@
     regexp: '^{{ item.key }}'
   with_items:
     - key: AdditionalFolders
-      value: /home/stepmania-content
+      value: /home/stepmania/stepmania-content
     - key: Windowed
       value: '0'
     - key: SoundDrivers
@@ -150,7 +150,7 @@
 
 - name: Make sure noteskins directory exists
   file:
-    path: /home/stepmania-content/NoteSkins/dance
+    path: /home/stepmania/stepmania-content/NoteSkins/dance
     state: directory
     owner: stepmania
     group: stepmania
@@ -159,13 +159,9 @@
 - name: Install noteskins
   synchronize:
     src: files/noteskins/
-    dest: /home/stepmania-content/NoteSkins/dance
+    dest: /home/stepmania/stepmania-content/NoteSkins/dance
 
 ## STARTUP AND DESKTOP ICONS
-
-- name: Install unclutter for hiding cursor
-  apt:
-    package: unclutter
 
 - name: Make sure pulseaudio is started and enabled for user
   become_user: stepmania
@@ -204,29 +200,28 @@
 
 - name: Make sure Songs folder exists
   file:
-    path: /home/stepmania-content/Songs
+    path: /home/stepmania/stepmania-content/Songs
     owner: stepmania
     group: stepmania
     state: directory
 
 - name: Add link to Songs to Desktop
   file:
-    src: /home/stepmania-content/Songs
+    src: /home/stepmania/stepmania-content/Songs
     dest: /home/stepmania/Desktop/Songs
     state: link
     force: yes
 
-
 - name: Make sure Courses folder exists
   file:
-    path: /home/stepmania-content/Courses
+    path: /home/stepmania/stepmania-content/Courses
     owner: stepmania
     group: stepmania
     state: directory
 
 - name: Add link to Courses to Desktop
   file:
-    src: /home/stepmania-content/Courses
+    src: /home/stepmania/stepmania-content/Courses
     dest: /home/stepmania/Desktop/Courses
     state: link
     force: yes

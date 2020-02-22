@@ -55,7 +55,7 @@
   diff: no
 
 - name: Install dependencies
-  shell: npm install
+  shell: npm install --no-save
   args:
     chdir: /opt/analog-dance-pad/server
   when: source.changed

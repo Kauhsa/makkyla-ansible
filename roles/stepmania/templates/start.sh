@@ -1,13 +1,10 @@
 #!/bin/bash
 
-trap 'pkill unclutter; xset +dpms; xset s on' EXIT
+trap 'xset +dpms; xset s on' EXIT
 
 # disable sleeps
 xset -dpms 
 xset s off
-
-# hide mouse cursor if not moved
-unclutter -idle 1 -root &
 
 # try to clone displays for streaming – but if it's not possible for some reason, that's fine as well
 (

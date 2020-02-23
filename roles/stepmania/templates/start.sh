@@ -63,4 +63,7 @@ pasuspender /opt/stepmania/stepmania
 if [[ $? -ne 0 ]]; then
   # wait until enter is pressed
   read -p "Press enter to continue"
+elif grep -q "5b5c513e-7067-4a14-89de-1fa007d93a33" "/home/stepmania/.stepmania-5.1/Logs/info.txt"; then
+  # Above is magic string inserted to logs by stepmania theme if "power off" is selected.
+  sudo poweroff
 fi

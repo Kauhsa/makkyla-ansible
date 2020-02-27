@@ -16,7 +16,7 @@
   git:
     repo: https://github.com/electromuis/padmiss-daemon
     dest: /opt/padmiss-daemon
-    version: fabcee5c5919eb2fadb2157e4e6e62f28c4dc28d
+    version: f74369831020ed5c57e6c63f0370aa6a08abb965
   notify: restart padmiss-daemon
   diff: no
 

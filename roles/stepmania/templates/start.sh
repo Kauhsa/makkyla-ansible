@@ -59,6 +59,10 @@ else
   sed -i "s/JoyRight/Joy1${right_pad_index}/g" /home/stepmania/.stepmania-5.1/Save/Keymaps.ini
 fi
 
+# remove logs before starting stepmania, just in case we don't accidentally
+# shut down in some corner case.
+rm -f "/home/stepmania/.stepmania-5.1/Logs/info.txt"
+
 pasuspender /opt/stepmania/stepmania
 
 if [[ $? -ne 0 ]]; then

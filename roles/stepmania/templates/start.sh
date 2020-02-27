@@ -26,8 +26,9 @@ right_pad_index="NOT_FOUND"
 IFS="
 "
 
-# ls -f is important - stepmania iterates devices on same order
-for device in $(ls -f /sys/class/input | grep input); do
+# TODO: now that stepmania sorts input devices, this could perhaps be much
+# simpler.
+for device in $(ls /sys/class/input | grep input); do
   device_name=$(cat "/sys/class/input/$device/name")
   real_device_path=$(realpath /sys/class/input/$device)
   device_usb_port=$(realpath $real_device_path/../../../.. | sed -E 's|^.*/(.*)$|\1|g')

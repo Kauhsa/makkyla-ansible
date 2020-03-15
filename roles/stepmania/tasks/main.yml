@@ -131,26 +131,12 @@
     regexp: '^Theme=(.*)'
   when: preferences.stat.exists
 
-- name: Check if ThemePrefs.ini exists
-  stat:
-    path: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
-  register: themeprefs
-
-- name: Set some theme preferences
-  lineinfile:
-    path: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
-    line: "{{ item.key }}={{ item.value }}\r"
-    insertafter: '\[Simply-Love-SM5\]'
-    regexp: '^{{ item.key }}'
-    firstmatch: yes
-  with_items:
-    - key: VisualTheme
-      value: Custards
-    - key: HideStockNoteSkins
-      value: 'true'
-    - key: AllowScreenSelectProfile
-      value: 'true'
-  when: themeprefs.stat.exists
+- name: Set ThemePrefs
+  copy:
+    src: files/ThemePrefs.ini
+    dest: /home/stepmania/.stepmania-5.1/Save/ThemePrefs.ini
+    owner: stepmania
+    group: stepmania
 
 - name: Make sure noteskins directory exists
   file:

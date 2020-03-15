@@ -1,0 +1,11 @@
+# A bit unsure whether these do anything.
+- name: Disable CPU vulnerability migitations for performance, set polling rates
+  lineinfile:
+    path: /etc/default/grub
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet nospectre_v1 nospectre_v2 nospec_store_bypass_disable migitations=off usbhid.mousepoll=10 usbhid.kbpoll=10 usbhid.jspoll=1"'
+    regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+  register: grub
+
+- name: Update GRUB
+  shell: update-grub
+  when: grub.changed

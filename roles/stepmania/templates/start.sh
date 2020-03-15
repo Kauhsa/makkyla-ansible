@@ -8,8 +8,8 @@ xset s off
 
 # try to clone displays for streaming – but if it's not possible for some reason, that's fine as well
 (
-  xrandr --output HDMI-0 --off --output DVI-D-0 --panning 0x0 &&
-  xrandr --output HDMI-0 --same-as DVI-D-0 --mode 1280x720 --scale-from 1920x1080 
+  xrandr --output HDMI-0 --off --output "{{ main_display_device }}" --panning 0x0 &&
+  xrandr --output HDMI-0 --same-as "{{ main_display_device }}" --mode 1280x720 --scale-from 1920x1080 
 ) || true
 
 # clear padmiss profile directories

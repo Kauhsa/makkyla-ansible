@@ -29,7 +29,7 @@
     dest: /usr/share/xsessions/stepmania-xfce.desktop
 
 - name: Copy stepmania-xfce.sh
-  copy:
-    src: files/stepmania-xfce.sh
+  template:
+    src: templates/stepmania-xfce.sh
     dest: /usr/bin/stepmania-xfce
     mode: 0755

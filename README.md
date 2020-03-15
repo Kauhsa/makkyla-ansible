@@ -41,7 +41,6 @@ Now we can start running commands on a remote computer with Ansible.
 
 - Create file `vault-key` to the root of this repository and set the Ansible vault key there. Ask Kauhsa about it.
 - Run `ansible-playbook -i inventories/makkyla full-install.yml --diff --vault-password-file vault-key --limit <machine ip>`.
-- Now we will get to the slightly janky part of this. Reboot and start Stepmania. It will not have the correct configuration yet - we just need to do this once to generate initial `Preferences.ini` and some other files.
-- Close Stepmania. It might be difficult, since you might not have proper key bindings to do that. I suggest connecting to the machine via SSH and executing `pkill stepmania`.
+- Now we will get to the slightly janky part of this! Reboot the computer and Stepmania will start. It will not have the correct configuration yet though - we just need to do this once to generate initial `Preferences.ini` and some other files. So just close it. It might be difficult, since you might not have proper key bindings to do that. I suggest connecting to the machine via SSH and executing `pkill stepmania`.
 - Run `ansible-playbook -i inventories/makkyla full-install.yml --diff --vault-password-file vault-key --limit <machine ip>` again. Reboot.
-- Copy your songs and courses to the `/home/stepmania/content` folder.
+- Copy your songs and courses to the `/home/stepmania/stepmania-content` folder.
